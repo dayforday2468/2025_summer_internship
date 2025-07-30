@@ -1,0 +1,21 @@
+# 생성되는 출력 폴더 무시
+/__pycache__/
+/cache/
+/data/
+/data_view/
+/parallel_edges/
+/parallel_edges_view/
+/self_loops/
+/self_loops_view/
+/dead_ends/
+/dead_ends_view/
+/gridiron/
+/gridiron_view/
+/isolated_nodes/
+/isolated_nodes_view/
+/interstitial_nodes/
+/interstitial_nodes_view/
+/shape/
+/report/
+/VISUM/
+*.ver

@@ -3,7 +3,7 @@ import osmnx as ox
 from config import cities
 
 
-def run_isolated_nodes_view(input_stage):
+def run_isolated_nodes_view(input_stage, iteration):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     input_dir = os.path.join(base_dir, input_stage)
     output_dir = os.path.join(base_dir, "isolated_nodes_view")
@@ -17,12 +17,12 @@ def run_isolated_nodes_view(input_stage):
             input_path = os.path.join(input_dir, f"{city_name}.graphml")
         else:
             input_path = os.path.join(
-                input_dir, city_name, f"{city_name}_{input_stage}.graphml"
+                input_dir, city_name, f"{city_name}_{input_stage}_{iteration}.graphml"
             )
 
         G = ox.load_graphml(input_path)
 
-        # 고립 노드 탐지: 연결된 이웃이 없는 노드
+        # 고립 노드 탐지
         isolated_nodes = [
             n for n in G.nodes if G.in_degree(n) == 0 and G.out_degree(n) == 0
         ]
@@ -33,13 +33,15 @@ def run_isolated_nodes_view(input_stage):
         # 출력 경로 설정
         city_output_dir = os.path.join(output_dir, city_name)
         os.makedirs(city_output_dir, exist_ok=True)
-        savepath = os.path.join(city_output_dir, f"{city_name}_isolated_nodes.png")
+        savepath = os.path.join(
+            city_output_dir, f"{city_name}_isolated_nodes_view_{iteration}.png"
+        )
 
         # 시각화 및 저장
         fig, ax = ox.plot_graph(
             G,
             node_color=node_colors,
-            node_size=5,
+            node_size=3,
             edge_color="gray",
             edge_linewidth=0.8,
             bgcolor="white",

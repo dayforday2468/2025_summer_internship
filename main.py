@@ -16,6 +16,7 @@ from isolated_nodes_view import run_isolated_nodes_view
 from interstitial_nodes import run_interstitial_nodes
 from interstitial_nodes_view import run_interstitial_nodes_view
 from make_shape_file import run_make_shape_file
+from report import run_report
 
 
 # 초기화
@@ -38,6 +39,7 @@ def initialize():
         "interstitial_nodes",
         "interstitial_nodes_view",
         "shape",
+        "report",
     ]
 
     for folder in folders_to_delete:
@@ -52,28 +54,35 @@ def initialize():
 # 파이프라인 실행
 def run_pipeline():
     run_osm_load()
-    run_osm_view("data")
+    run_osm_view("data", 0)
 
-    run_parallel_edges("data")
-    run_parallel_edges_view("data")
+    for i in range(1, 4):
+        print(f"\nIteration: {i}")
+        if i == 1:
+            run_parallel_edges("data", i)
+            run_parallel_edges_view("data", i)
+        else:
+            run_parallel_edges("interstitial_nodes", i, True)
+            run_parallel_edges_view("interstitial_nodes", i, True)
 
-    run_interstitial_nodes("parallel_edges")
-    run_interstitial_nodes_view("parallel_edges")
+        run_self_loops("parallel_edges", i)
+        run_self_loops_view("parallel_edges", i)
 
-    run_self_loops("interstitial_nodes")
-    run_self_loops_view("interstitial_nodes")
+        run_dead_ends("self_loops", i)
+        run_dead_ends_view("self_loops", i)
 
-    run_dead_ends("self_loops")
-    run_dead_ends_view("self_loops")
+        run_gridiron("dead_ends", i)
+        run_gridiron_view("dead_ends", i)
 
-    run_gridiron("dead_ends")
-    run_gridiron_view("dead_ends")
+        run_interstitial_nodes("gridiron", i)
+        run_interstitial_nodes_view("gridiron", i)
 
-    run_isolated_nodes("gridiron")
-    run_isolated_nodes_view("gridiron")
+    run_isolated_nodes("interstitial_nodes", 3)
+    run_isolated_nodes_view("interstitial_nodes", 3)
 
-    run_osm_view("isolated_nodes")
-    run_make_shape_file("isolated_nodes")
+    run_osm_view("isolated_nodes", 3)
+    run_make_shape_file("isolated_nodes", 3)
+    run_report("isolated_nodes", 3)
     print("Pipeline complete. Final graph saved.")
 
 

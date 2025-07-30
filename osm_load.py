@@ -41,8 +41,16 @@ def run_osm_load():
         )
 
         # dead-end 후보: 이웃 1개
-        small_dead_ends = {n for n in G.nodes if len(list(G.neighbors(n))) == 1}
-        big_dead_ends = {n for n in G_big.nodes if len(list(G_big.neighbors(n))) == 1}
+        small_dead_ends = {
+            n
+            for n in G.nodes
+            if len(list(set(G.successors(n)) | set(G.predecessors(n)))) == 1
+        }
+        big_dead_ends = {
+            n
+            for n in G_big.nodes
+            if len(list(set(G_big.successors(n)) | set(G_big.predecessors(n)))) == 1
+        }
 
         # 교집합만 진짜 dead-end로 판단
         true_dead_ends = small_dead_ends & big_dead_ends

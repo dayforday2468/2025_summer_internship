@@ -3,5 +3,6 @@ cities = [
     # ("Davis", "Davis, California, USA"),
     # ("Portales", "Portales, New Mexico, USA"),
     # ("Petaluma", "Petaluma, California, USA"),
-    ("Seoul", "Seoul, South Korea"),
+    # ("Seoul", "Seoul, South Korea"),
+    ("Hwaseong", "Hwaseong, South Korea")
 ]

@@ -3,7 +3,7 @@ import osmnx as ox
 from config import cities
 
 
-def run_isolated_nodes(input_stage):
+def run_isolated_nodes(input_stage, iteration):
     # 디렉토리 설정
     script_dir = os.path.dirname(os.path.abspath(__file__))
     input_base = os.path.join(script_dir, input_stage)
@@ -18,7 +18,7 @@ def run_isolated_nodes(input_stage):
             input_path = os.path.join(input_base, f"{city_name}.graphml")
         else:
             input_path = os.path.join(
-                input_base, city_name, f"{city_name}_{input_stage}.graphml"
+                input_base, city_name, f"{city_name}_{input_stage}_{iteration}.graphml"
             )
         G = ox.load_graphml(input_path)
 
@@ -35,9 +35,9 @@ def run_isolated_nodes(input_stage):
         os.makedirs(city_output_dir, exist_ok=True)
 
         output_path = os.path.join(
-            city_output_dir, f"{city_name}_isolated_nodes.graphml"
+            city_output_dir, f"{city_name}_isolated_nodes_{iteration}.graphml"
         )
 
         # 저장
         ox.save_graphml(G, filepath=output_path)
-        print(f"Saved cleaned graph to {output_path}")
+        print(f"Saved to {output_path}")

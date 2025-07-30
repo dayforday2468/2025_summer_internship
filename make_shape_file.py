@@ -4,7 +4,7 @@ import geopandas as gpd
 from config import cities
 
 
-def run_make_shape_file(input_stage):
+def run_make_shape_file(input_stage, iteration):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     input_base = os.path.join(script_dir, input_stage)
     output_base = os.path.join(script_dir, "shape")
@@ -17,7 +17,7 @@ def run_make_shape_file(input_stage):
             input_path = os.path.join(input_base, f"{city_name}.graphml")
         else:
             input_path = os.path.join(
-                input_base, city_name, f"{city_name}_{input_stage}.graphml"
+                input_base, city_name, f"{city_name}_{input_stage}_{iteration}.graphml"
             )
 
         G = ox.load_graphml(input_path)
@@ -33,12 +33,9 @@ def run_make_shape_file(input_stage):
 
         # shapefile 저장
         edge_output_path = os.path.join(
-            city_output_dir, f"{city_name}_{input_stage}_edges.shp"
+            city_output_dir, f"{city_name}_{input_stage}_{iteration}edges.shp"
         )
 
         gdf_edges.to_file(edge_output_path)
 
         print(f"Saved edge shapefile to {edge_output_path}")
-
-
-run_make_shape_file("isolated_nodes")

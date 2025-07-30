@@ -3,7 +3,7 @@ import osmnx as ox
 from config import cities
 
 
-def run_self_loops_view(input_stage):
+def run_self_loops_view(input_stage, iteration):
     # 디렉토리 설정
     script_dir = os.path.dirname(os.path.abspath(__file__))
     input_base = os.path.join(script_dir, input_stage)
@@ -21,7 +21,7 @@ def run_self_loops_view(input_stage):
             graph_path = os.path.join(
                 input_base,
                 city_name,
-                f"{city_name}_{input_stage}.graphml",
+                f"{city_name}_{input_stage}_{iteration}.graphml",
             )
 
         G = ox.load_graphml(graph_path)
@@ -33,12 +33,14 @@ def run_self_loops_view(input_stage):
         city_output_dir = os.path.join(output_base, city_name)
         os.makedirs(city_output_dir, exist_ok=True)
 
-        savepath = os.path.join(city_output_dir, f"{city_name}_self_loops_view.png")
+        savepath = os.path.join(
+            city_output_dir, f"{city_name}_self_loops_view_{iteration}.png"
+        )
 
         # 저장
         fig, ax = ox.plot_graph(
             G,
-            node_size=5,
+            node_size=3,
             node_color="black",
             edge_color=edge_colors,
             edge_linewidth=0.8,

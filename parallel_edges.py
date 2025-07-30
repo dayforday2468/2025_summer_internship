@@ -3,7 +3,7 @@ import osmnx as ox
 from config import cities
 
 
-def run_parallel_edges(input_stage):
+def run_parallel_edges(input_stage, iteration, is_first=False):
     # 디렉토리 설정
     script_dir = os.path.dirname(os.path.abspath(__file__))
     input_dir = os.path.join(script_dir, input_stage)
@@ -18,7 +18,9 @@ def run_parallel_edges(input_stage):
             graph_path = os.path.join(input_dir, f"{city_name}.graphml")
         else:
             graph_path = os.path.join(
-                input_dir, city_name, f"{city_name}_{input_stage}.graphml"
+                input_dir,
+                city_name,
+                f"{city_name}_{input_stage}_{iteration-1 if is_first else iteration}.graphml",
             )
         G = ox.load_graphml(graph_path)
 
@@ -41,7 +43,7 @@ def run_parallel_edges(input_stage):
         city_output_dir = os.path.join(output_dir, city_name)
         os.makedirs(city_output_dir, exist_ok=True)
         output_path = os.path.join(
-            city_output_dir, f"{city_name}_parallel_edges.graphml"
+            city_output_dir, f"{city_name}_parallel_edges_{iteration}.graphml"
         )
 
         ox.save_graphml(G, filepath=output_path)

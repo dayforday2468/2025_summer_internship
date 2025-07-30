@@ -60,11 +60,6 @@ def run_osm_load():
         for node in true_dead_ends:
             G.nodes[node]["is_dead_end"] = 1
 
-        # 시각화용 노드 색 지정
-        node_colors = [
-            "red" if G.nodes[n].get("is_dead_end") else "black" for n in G.nodes()
-        ]
-
         # 저장
         savepath = os.path.join(data_dir, f"{name}.graphml")
         ox.save_graphml(G, filepath=savepath)

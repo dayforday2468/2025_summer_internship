@@ -30,7 +30,9 @@ def run_gridiron_view(input_stage, iteration):
             if len(neighbors) != 4:
                 continue
 
-            incident_edges = G.edges(node, data=True)
+            incident_edges = list(G.in_edges(node, data=True)) + list(
+                G.out_edges(node, data=True)
+            )
             lengths = [
                 edata.get("length", float("inf")) for _, _, edata in incident_edges
             ]

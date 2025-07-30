@@ -12,24 +12,40 @@ def delete_interstitial_node(G, node):
 
     u, v = neighbors
 
-    coords = []
-    for a, b in [(u, node), (node, v)]:
+    def extract_coords(a, b):
         if G.has_edge(a, b):
             edge_data = G.get_edge_data(a, b)
         elif G.has_edge(b, a):
             edge_data = G.get_edge_data(b, a)
         else:
-            continue
+            return None
+
         geom = edge_data[list(edge_data.keys())[0]].get("geometry", None)
         if geom:
-            coords.extend(geom.coords)
+            return list(geom.coords)
         else:
-            coords.append((G.nodes[a]["x"], G.nodes[a]["y"]))
-            coords.append((G.nodes[b]["x"], G.nodes[b]["y"]))
+            return [
+                (G.nodes[a]["x"], G.nodes[a]["y"]),
+                (G.nodes[b]["x"], G.nodes[b]["y"]),
+            ]
 
-    if coords:
-        G.add_edge(u, v, geometry=LineString(coords), simplified=True)
+    # (1) u → node → v → u→v 간선 생성
+    if G.has_edge(u, node) and G.has_edge(node, v):
+        coords1 = extract_coords(u, node)
+        coords2 = extract_coords(node, v)
+        if coords1 and coords2:
+            coords = coords1 + coords2[1:]
+            G.add_edge(u, v, geometry=LineString(coords), simplified=True)
 
+    # (2) v → node → u → v→u 간선 생성
+    if G.has_edge(v, node) and G.has_edge(node, u):
+        coords1 = extract_coords(v, node)
+        coords2 = extract_coords(node, u)
+        if coords1 and coords2:
+            coords = coords1 + coords2[1:]
+            G.add_edge(v, u, geometry=LineString(coords), simplified=True)
+
+    # (3) 노드 제거
     G.remove_node(node)
 
 

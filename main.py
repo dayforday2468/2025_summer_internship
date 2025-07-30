@@ -2,6 +2,7 @@ import os
 import shutil
 
 from osm_load import run_osm_load
+from shp_load import run_shp_load
 from osm_view import run_osm_view
 from parallel_edges import run_parallel_edges
 from parallel_edges_view import run_parallel_edges_view
@@ -52,8 +53,11 @@ def initialize():
 
 
 # 파이프라인 실행
-def run_pipeline():
-    run_osm_load()
+def run_pipeline(source):
+    if source == "osm":
+        run_osm_load()
+    elif source == "visum":
+        run_shp_load()
     run_osm_view("data", 0)
 
     for i in range(1, 4):
@@ -83,9 +87,9 @@ def run_pipeline():
     run_osm_view("isolated_nodes", 3)
     run_make_shape_file("isolated_nodes", 3)
     run_report("isolated_nodes", 3)
-    print("Pipeline complete. Final graph saved.")
+    print("Pipeline complete.")
 
 
 if __name__ == "__main__":
     initialize()
-    run_pipeline()
+    run_pipeline("visum")

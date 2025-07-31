@@ -53,14 +53,14 @@ def initialize():
 
 
 # 파이프라인 실행
-def run_pipeline(source):
+def run_pipeline(source, max_iter):
     if source == "osm":
         run_osm_load()
     elif source == "visum":
         run_shp_load()
     run_osm_view("data", 0)
 
-    for i in range(1, 4):
+    for i in range(1, max_iter + 1):
         print(f"\nIteration: {i}")
         if i == 1:
             run_parallel_edges("data", i)
@@ -81,15 +81,18 @@ def run_pipeline(source):
         run_interstitial_nodes("gridiron", i)
         run_interstitial_nodes_view("gridiron", i)
 
-    run_isolated_nodes("interstitial_nodes", 3)
-    run_isolated_nodes_view("interstitial_nodes", 3)
+    run_isolated_nodes("interstitial_nodes", max_iter)
+    run_isolated_nodes_view("interstitial_nodes", max_iter)
 
-    run_osm_view("isolated_nodes", 3)
-    run_make_visum_shape_file("isolated_nodes", 3)
-    run_report("isolated_nodes", 3)
+    run_osm_view("isolated_nodes", max_iter)
+    if source == "osm":
+        run_make_osm_shape_file("isolated_nodes", max_iter)
+    elif source == "visum":
+        run_make_visum_shape_file("isolated_nodes", max_iter)
+    run_report("isolated_nodes", max_iter)
     print("Pipeline complete.")
 
 
 if __name__ == "__main__":
     initialize()
-    run_pipeline("visum")
+    run_pipeline("visum", 3)

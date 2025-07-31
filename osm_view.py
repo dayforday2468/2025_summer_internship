@@ -79,4 +79,4 @@ def run_osm_view(input_stage, iteration):
 
 
 # run_osm_view("data", 0)
-# run_osm_view("isolated_nodes", 3)
+# run_osm_view("isolated_nodes", 1)

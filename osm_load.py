@@ -52,8 +52,24 @@ def run_osm_load():
             if len(list(set(G_big.successors(n)) | set(G_big.predecessors(n)))) == 1
         }
 
-        # 교집합만 진짜 dead-end로 판단
-        true_dead_ends = small_dead_ends & big_dead_ends
+        # 교집합 중에서 연결 길이가 500m 미만인 경우만 dead-end로 간주
+        true_dead_ends = set()
+        for node in small_dead_ends & big_dead_ends:
+            neighbors = set(G.successors(node)) | set(G.predecessors(node))
+            # 연결된 edge의 길이 가져오기
+            edge_lengths = []
+            for nbr in neighbors:
+                for u, v in [(node, nbr), (nbr, node)]:
+                    if G.has_edge(u, v):
+                        edge_data_dict = G.get_edge_data(u, v, default={})
+                        for attr in edge_data_dict.values():
+                            try:
+                                edge_lengths.append(float(attr.get("length", 0)))
+                            except:
+                                continue
+            max_length = max(edge_lengths) if edge_lengths else 0
+            if max_length < 500:
+                true_dead_ends.add(node)
 
         # 모든 노드에 is_dead_end attribute 설정
         nx.set_node_attributes(G, 0, "is_dead_end")

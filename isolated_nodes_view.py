@@ -1,5 +1,6 @@
 import os
 import osmnx as ox
+import networkx as nx
 from config import cities
 
 
@@ -22,13 +23,12 @@ def run_isolated_nodes_view(input_stage, iteration):
 
         G = ox.load_graphml(input_path)
 
-        # 고립 노드 탐지
-        isolated_nodes = [
-            n for n in G.nodes if G.in_degree(n) == 0 and G.out_degree(n) == 0
-        ]
+        # ✅ 가장 큰 컴포넌트 구하기
+        largest_cc = max(nx.strongly_connected_components(G), key=len)
+        removed_nodes = set(G.nodes()) - largest_cc
 
-        # 노드 색상 지정
-        node_colors = ["red" if node in isolated_nodes else "black" for node in G.nodes]
+        # ✅ 색상 지정: 제거된 노드는 빨간색, 유지된 노드는 검정
+        node_colors = ["red" if node in removed_nodes else "black" for node in G.nodes]
 
         # 출력 경로 설정
         city_output_dir = os.path.join(output_dir, city_name)

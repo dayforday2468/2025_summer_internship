@@ -1,5 +1,6 @@
 import os
 import osmnx as ox
+import networkx as nx
 from config import cities
 
 
@@ -22,13 +23,10 @@ def run_isolated_nodes(input_stage, iteration):
             )
         G = ox.load_graphml(input_path)
 
-        # 고립 노드 탐지: 이웃이 없는 노드
-        isolated_nodes = [
-            n for n in G.nodes if G.in_degree(n) == 0 and G.out_degree(n) == 0
-        ]
-
-        # 제거
-        G.remove_nodes_from(isolated_nodes)
+        # ✅ 가장 큰 strongly connected component만 남김
+        largest_cc = max(nx.strongly_connected_components(G), key=len)
+        nodes_to_remove = set(G.nodes()) - largest_cc
+        G.remove_nodes_from(nodes_to_remove)
 
         # 출력 디렉토리 생성
         city_output_dir = os.path.join(output_base, city_name)

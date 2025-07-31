@@ -22,17 +22,23 @@ def map_typeno_to_highway(typeno):
 
 
 def load_shp_to_graph(links_path, nodes_path):
-    G = nx.DiGraph()
+    G = nx.MultiDiGraph()
     node_positions = {}
 
     gdf_nodes = gpd.read_file(nodes_path)
     for _, row in gdf_nodes.iterrows():
         node_id = str(row["NO"])
-        point = row.geometry
-        G.add_node(node_id, geometry=point, x=point.x, y=point.y)
-        node_positions[node_id] = (point.x, point.y)
+        x = float(row["XCOORD"])
+        y = float(row["YCOORD"])
+        point = Point(x, y)
+        G.add_node(node_id, geometry=point, x=x, y=y)
+        node_positions[node_id] = (x, y)
 
     gdf_links = gpd.read_file(links_path)
+
+    # ✅ CAPPRT가 0인 도로는 제거
+    gdf_links = gdf_links[gdf_links["CAPPRT"] > 0]
+
     for _, row in gdf_links.iterrows():
         u = str(row.get("FROMNODENO"))
         v = str(row.get("TONODENO"))
@@ -68,7 +74,21 @@ def load_shp_to_graph(links_path, nodes_path):
     for node in G.nodes:
         neighbors = set(G.successors(node)) | set(G.predecessors(node))
         if len(neighbors) == 1:
-            G.nodes[node]["is_dead_end"] = str(1)
+            # 연결된 edge의 길이 가져오기
+            edge_lengths = []
+            for nbr in neighbors:
+                for u, v in [(node, nbr), (nbr, node)]:
+                    if G.has_edge(u, v):
+                        edge_data_dict = G.get_edge_data(u, v, default={})
+                        for attr in edge_data_dict.values():
+                            try:
+                                edge_lengths.append(float(attr.get("length", 0)))
+                            except:
+                                continue
+            max_length = max(edge_lengths) if edge_lengths else 0
+            if max_length < 500:
+                G.nodes[node]["is_dead_end"] = str(1)
+
     return G
 
 

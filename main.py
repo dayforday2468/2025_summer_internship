@@ -16,7 +16,7 @@ from isolated_nodes import run_isolated_nodes
 from isolated_nodes_view import run_isolated_nodes_view
 from interstitial_nodes import run_interstitial_nodes
 from interstitial_nodes_view import run_interstitial_nodes_view
-from make_shape_file import run_make_shape_file
+from make_shape_file import run_make_osm_shape_file, run_make_visum_shape_file
 from report import run_report
 
 
@@ -85,7 +85,7 @@ def run_pipeline(source):
     run_isolated_nodes_view("interstitial_nodes", 3)
 
     run_osm_view("isolated_nodes", 3)
-    run_make_shape_file("isolated_nodes", 3)
+    run_make_visum_shape_file("isolated_nodes", 3)
     run_report("isolated_nodes", 3)
     print("Pipeline complete.")
 

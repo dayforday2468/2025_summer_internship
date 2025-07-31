@@ -29,7 +29,7 @@ def delete_interstitial_node(G, node):
                 (G.nodes[b]["x"], G.nodes[b]["y"]),
             ]
 
-    # (1) u → node → v → u→v 간선 생성
+    # 새로운 간선 추가 및 제거 엣지
     if G.has_edge(u, node) and G.has_edge(node, v):
         coords1 = extract_coords(u, node)
         coords2 = extract_coords(node, v)
@@ -37,7 +37,6 @@ def delete_interstitial_node(G, node):
             coords = coords1 + coords2[1:]
             G.add_edge(u, v, geometry=LineString(coords), simplified=True)
 
-    # (2) v → node → u → v→u 간선 생성
     if G.has_edge(v, node) and G.has_edge(node, u):
         coords1 = extract_coords(v, node)
         coords2 = extract_coords(node, u)
@@ -45,7 +44,6 @@ def delete_interstitial_node(G, node):
             coords = coords1 + coords2[1:]
             G.add_edge(v, u, geometry=LineString(coords), simplified=True)
 
-    # (3) 노드 제거
     G.remove_node(node)
 
 

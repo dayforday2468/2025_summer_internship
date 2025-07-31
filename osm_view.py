@@ -76,3 +76,7 @@ def run_osm_view(input_stage, iteration):
         )
 
         print(f"Saved {name} network to {savepath}")
+
+
+# run_osm_view("data", 0)
+# run_osm_view("isolated_nodes", 3)

@@ -60,7 +60,12 @@ def run_make_visum_shape_file(input_stage, iteration):
     )
 
     # simplification 결과 graph 불러오기
-    graph_path = os.path.join(input_base, f"Hwaseong_{input_stage}_{iteration}.graphml")
+    if input_stage == "data":
+        graph_path = os.path.join(script_dir, "data", "Hwaseong.graphml")
+    else:
+        graph_path = os.path.join(
+            input_base, f"Hwaseong_{input_stage}_{iteration}.graphml"
+        )
     G = ox.load_graphml(graph_path)
 
     # 초기 simplification된 노드/간선 목록
@@ -131,3 +136,6 @@ def run_make_visum_shape_file(input_stage, iteration):
 
     print(f"Saved filtered VISUM node shapefile to: {nodes_output_path}")
     print(f"Saved filtered VISUM edge shapefile to: {edges_output_path}")
+
+
+# run_make_visum_shape_file("data", 0)

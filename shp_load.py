@@ -36,8 +36,8 @@ def load_shp_to_graph(links_path, nodes_path):
 
     gdf_links = gpd.read_file(links_path)
 
-    # ✅ CAPPRT가 0인 도로는 제거
-    gdf_links = gdf_links[gdf_links["CAPPRT"] > 0]
+    # # ✅ CAPPRT가 0인 도로는 제거
+    # gdf_links = gdf_links[gdf_links["CAPPRT"] > 0]
 
     for _, row in gdf_links.iterrows():
         u = str(row.get("FROMNODENO"))
@@ -45,7 +45,6 @@ def load_shp_to_graph(links_path, nodes_path):
 
         if u not in node_positions or v not in node_positions:
             continue
-
         start_point = node_positions[u]
         end_point = node_positions[v]
         geom = LineString([start_point, end_point])

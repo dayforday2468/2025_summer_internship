@@ -1,4 +1,4 @@
-# Road-map simplification for Visum assignment accelation
+# Road-map simplification for Visum assignment acceleration
 
 ## 1. Summary PPT
 [Summary PPT](https://docs.google.com/presentation/d/1DR3AEHeWh57ToqNGFL59W9g6WoxOVxH6/edit?usp=sharing&ouid=116037637322689084159&rtpof=true&sd=true)

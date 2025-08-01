@@ -1,10 +1,13 @@
 # Road-map simplification for Visum assignment accelation
 
 ## 1. Summary PPT
-[Summary PPT](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fdayforday2468%2F2025_summer_internship%2Frefs%2Fheads%2Fmain%2Fsummary.pptx&wdOrigin=BROWSELINK)
+[Summary PPT](https://docs.google.com/presentation/d/1DR3AEHeWh57ToqNGFL59W9g6WoxOVxH6/edit?usp=sharing&ouid=116037637322689084159&rtpof=true&sd=true)
 
 
-[Contribution PPT](https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fraw.githubusercontent.com%2Fdayforday2468%2F2025_summer_internship%2Frefs%2Fheads%2Fmain%2Fcomtribution.pptx&wdOrigin=BROWSELINK)
+[Contribution PPT](https://docs.google.com/presentation/d/14jKP0UeYwmAg-mZNlipsKhlvtfMo6TIS/edit?usp=sharing&ouid=116037637322689084159&rtpof=true&sd=true)
 ## 2. Current problems
+[Current problems PPT](https://docs.google.com/presentation/d/1BfDXiAYDo7AYjh0zPtqMd7qZRGIEdCUX/edit?usp=sharing&ouid=116037637322689084159&rtpof=true&sd=true)
 
 ## 3. Reference
+[Original paper](https://drive.google.com/file/d/1AsUgsy_p6VAs9lsXYQwESQpCZyf3QjQ9/view?usp=sharing)
+[Supplementary paper](https://drive.google.com/file/d/1kvGstqd5AZqDSUXo2RZ9z3S-3EVWzB4L/view?usp=sharing)
